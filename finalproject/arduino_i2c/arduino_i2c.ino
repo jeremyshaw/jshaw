@@ -5,55 +5,85 @@
 
 int num = 0, renum = 0;
 
+//Jeremy
+int relayPump = 3; //active low
+int relayPumpState = 1;
+int relayHeater = 4; //active low
+int relayHeaterState = 1;
+int light = 5; //active high?
+int lightState = 0;
+int waterSense = A0; //reported information
+void Jeremy(){
+  pinMode(relayPump, OUTPUT);
+  pinMode(relayHeater, OUTPUT);
+  pinMode(light, OUTPUT);
+  pinMode(waterSense, INPUT);
+  digitalWrite(relayHeater, relayHeaterState);
+  digitalWrite(relayPump, relayPumpState);
+  digitalWrite(light, lightState);
+}
+
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
-  Serial.begin(9600);
-
   Wire.begin(sAddr);
-
   Wire.onReceive(receiveData);
   Wire.onRequest(sendData);
-
-  Serial.println("Start");
+  Jeremy();
 }
 
 void loop() {
-  delay(100);
+  delay(100); 
 }
 
-void receiveData(int byteCount){
-  while(Wire.available()){
+void receiveData(int byteCount) {
+  while (Wire.available()) {
     num = Wire.read();
     Serial.print("data received: ");
     Serial.println(num);
   }
 }
 
-void sendData(){
-  
-  //Option 1 for information
-  if(num == 1)
+void sendData() {
+
+  //Option 1 for waterSense
+  if (num == 1)
   {
-    renum = num + 1;  //just to verify that the information is legit
-    Wire.write(renum);
+    Wire.write(analogRead(waterSense));
   }
-  //Option 2 for information
-  else if(num == 2)
+  //Option 2 for relayPump
+  else if (num == 2)
   {
-    renum = num + 10;  //just to verify that the information is legit
-    Wire.write(renum);
+    if (relayPumpState == 0) {
+      relayPumpState = 1;
+    }
+    else if (relayPumpState == 1) {
+      relayPumpState = 0;
+    }
+    digitalWrite(relayPump, relayPumpState);
+    Wire.write(relayPumpState);
   }
-  //Option 3 for information
-  else if(num == 3)
+  //Option 3 for relayHeater
+  else if (num == 3)
   {
-    renum = num + 50;  //just to verify that the information is legit
-    Wire.write(renum);
+    if (relayHeaterState == 0) {
+      relayHeaterState = 1;
+    }
+    else if (relayHeaterState == 1) {
+      relayHeaterState = 0;
+    }
+    digitalWrite(relayHeater, relayHeaterState);
+    Wire.write(relayHeaterState);
   }
-  //Option 4 for information
-  else if(num == 4)
+  //Option 4 for light
+  else if (num == 4)
   {
-    renum = num + 50;  //just to verify that the information is legit
-    Wire.write(renum);
+    if(lightState == 0){
+      lightState = 1;
+    }
+    else if (lightState == 1){
+      lightState = 0;
+    }
+    digitalWrite(light, lightState);
+    Wire.write(lightState);
   }
   //arduino crashes if you ask it for an option that it doesn't know about
   else
