@@ -1,17 +1,12 @@
 #!/usr/bin/python3
-import _thread
-import smbus
-import time
-from socket import *
-import sys
+import _thread, smbus, socket,sys, time
 
-
-
+#still needs: more try:except error escapes to prevent crashes on I/O errors
 
 bus = smbus.SMBus(1)
 tf = 'plantdata.txt'
 
-address = 12 #default to prevent crashings
+address = 12 #default to prevent potential crash
 waterlevel = 0
 waterpump = 0
 heaterswitch = 0
