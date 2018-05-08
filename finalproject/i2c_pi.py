@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import _thread, smbus, socket,sys, time
+import _thread, smbus, socket, sys, time
 
 #still needs: more try:except error escapes to prevent crashes on I/O errors
 
@@ -19,34 +19,25 @@ light_sensor = 0
 humidity_sensor = 0
 
 def web_server():
-    serverSocket = socket(AF_INET, SOCK_STREAM)
+    serverSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     serverSocket.bind(('', 12341))
     serverSocket.listen(1)
 
     while True:
-        
-        print('Ready to serve...')
         connectionSocket, addr = serverSocket.accept()
-        try:
-            message = connectionSocket.recv(1024)
-            connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
-            bus.write_byte(11, 1)
-            waterlevel = bus.read_byte(11)
-            connectionSocket.send(b'waterlevel = ')
-            connectionSocket.send(bytes(str(waterlevel), 'ascii'))
-            
-            print('File received')
-            connectionSocket.close()
-        except IOError:
-            connectionSocket.send(b'HTTP/1.1 404 File Not Found\n')
-            print('File not found 404')
-            connectionSocket.close()
+        print('Ready to serve...')
+        message = connectionSocket.recv(1024)
+        connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
+        bus.write_byte(11, 1)
+        waterlevel = bus.read_byte(11)
+        connectionSocket.send(b'waterlevel = ')
+        connectionSocket.send(bytes(str(waterlevel), 'ascii'))
+        connectionSocket.close()
         
 try: 
     _thread.start_new_thread(web_server,() )
 except:
-    print ("Error: unable to start thread")
-
+    print ("Error: unable to start server thread")
 
 def writeNumber(num):
     bus.write_byte(address, num)
@@ -65,7 +56,6 @@ def number11():
         print("2 for water pump on/off")
         print("3 for heater on/off")
         print("4 for light switch on/off")
-
         options = int(input("Enter 1-4: "))
         if options == 0:
             break
@@ -89,7 +79,6 @@ def number11():
             time.sleep(1)
             lightswitch = readNumber()
             print("light state = " + str(lightswitch))
-           
         if not options:
             continue
 
@@ -128,16 +117,6 @@ def number12():
         if not options:
             continue
         
-        
-        
-        
-       # writeNumber(options)
-       # time.sleep(1)
-
-        #num = readNumber()
-        #print(num)
-
-
 def number13():
     #daniel
     print("Daniel's Arduino reporting")
