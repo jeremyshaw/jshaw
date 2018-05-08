@@ -18,9 +18,9 @@ const int servoPin = 9;
 
 //Predefined servo states/fan speeds; not touched by Pi
 //Servo values
-const int closedVent = 0;
+const int closedVent = 30;
 const int partOpenVent = 90;
-const int fullOpenVent = 180;
+const int fullOpenVent = 150;
 //Fan values
 const int offSpeed = 0;
 const int slowSpeed = 50;
@@ -28,12 +28,11 @@ const int medSpeed = 150;
 const int highSpeed = 255;
 
 //Variables passed from Pi
-const int toggleVal = 4;
+const int toggleVal = 1;
 int userInput;
 int fanSpeed = 0;
 
 //Variables manipulated only by slave
-int fanState;
 boolean ventState = false;
 
 
@@ -41,23 +40,19 @@ boolean ventState = false;
 void setup()
 {
   pinMode(relayPin, OUTPUT);
-    pinMode(speedValPin, INPUT);
+  pinMode(speedValPin, INPUT);
   digitalWrite(relayPin, HIGH);
-  fanState = digitalRead(relayPin);
   servo.attach(servoPin);
-  
-    Wire.begin(sAddr);
-    Wire.onReceive(receiveData);
-    Wire.onRequest(sendData);
-    
-  Serial.begin(9600);
+  Wire.begin(sAddr);
+  Wire.onReceive(receiveData);
+  Wire.onRequest(sendData);
 }
 
 
 void loop()
 {
-    fanPWM();
-    ventControl();
+  fanPWM();
+  ventControl();
   delay(10);
 }
 
@@ -69,81 +64,59 @@ void receiveData(int byteCount)
     userInput = Wire.read();
     if (userInput == toggleVal)
     {
-      fanState = digitalRead(relayPin);
-      if (fanState == HIGH)
-            {
-        digitalWrite(relayPin, LOW);
-            }
-      else if (fanState == LOW)
-            {
-        digitalWrite(relayPin, HIGH);
-            }
-      fanState = digitalRead(relayPin);
+      digitalWrite(relayPin, HIGH);
+      ventState = 0;
     }
     else
-        {
-      fanSpeed = userInput;
-        }
+    {
+      fanSpeed = userInput-1;
+      digitalWrite(relayPin, LOW);
+      ventState = 1;
+    }
   }
 }
 
 
-//Send fanState, fanSpeed, and ventState back to the Pi; messages are sent as strings(not sure on this part)
+//Send fanSpeed back to the Pi; messages are sent as int, range 1-4
 void sendData()
 {
-  if (fanState == LOW)
+  switch (fanSpeed)
   {
-    Wire.write("ON");
-    switch (fanSpeed)
-    {
-      case 1:
-        Wire.write("LOW");
-        break;
-      case 2:
-        Wire.write("MEDIUM");
-        break;
-      default:
-        Wire.write("HIGH");
-    }
+    case 0:
+      Wire.write(0);
+      break;
+    case 1:
+      Wire.write(1);
+      break;
+    case 2:
+      Wire.write(2);
+      break;
+    default:
+      Wire.write(3);
   }
-  else
-    Wire.write("OFF");
-  
-  if (ventState == true)
-    Wire.write("OPEN");
-  else
-    Wire.write("CLOSED");
 }
 
 
 //Manipulates the fanspeed
 void fanPWM()
 {
-  if (fanState == LOW)
+  switch (fanSpeed)
   {
-    switch (fanSpeed)
-    {
-      case 0:
-        analogWrite(fanPinPWM, offSpeed);
-        ventState = false;
-        break;
-      case 1:
-        analogWrite(fanPinPWM, slowSpeed);
-        ventState = true;
-        break;
-      case 2:
-        analogWrite(fanPinPWM, medSpeed);
-        ventState = true;
-        break;
-      default:
-        analogWrite(fanPinPWM, highSpeed);
-        ventState = true;
-    }
-  }
-  else
-  {
-    analogWrite(fanPinPWM, offSpeed);
-    ventState = false;
+    case 0:
+      analogWrite(fanPinPWM, offSpeed);
+
+      break;
+    case 1:
+      analogWrite(fanPinPWM, slowSpeed);
+
+      break;
+    case 2:
+      analogWrite(fanPinPWM, medSpeed);
+
+      break;
+    default:
+      analogWrite(fanPinPWM, highSpeed);
+
   }
 }
 
@@ -159,6 +132,9 @@ void ventControl()
       servo.write(fullOpenVent);
   }
   else
-    servo.write(0);
+  {
+    servo.write(closedVent);
+  }
+    
 }
 
