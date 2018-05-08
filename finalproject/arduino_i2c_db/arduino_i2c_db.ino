@@ -9,7 +9,7 @@ int num = 0, renum = 0;
 int temp = 0;
 int humidity = 0;
 int lightLevel = 0;
-int lightLevelPin = 5; //3 5 6 9 10 11 on the Pro Mini are PWM pins
+int lightLevelPin = A0; //3 5 6 9 10 11 on the Pro Mini are PWM pins //but A0-A3 are the ones needed for analog reading, lol
 int DHTPowerPin = 3;
 //uses DHT11 temp and humidity sensor - fewer wires than seperate temp and hum sensors
 #define DHT11_PIN 2
