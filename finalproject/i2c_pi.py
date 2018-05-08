@@ -154,7 +154,7 @@ def number13():
         print("3 for humidity sensor")
         try:
             options = int(input("Enter 0-3: "))
-        except:
+        except KeyboardInterrupt:
             print("input invalid, try again")
             options = 9
         if options == 0:
@@ -199,7 +199,7 @@ while True:
     print("13 for Daniel")
     try:
         address = int(input("Device address: \n"))
-    except Exception:
+    except KeyboardInterrupt:
         print("invalid input, try again.")
     if address == 11:
         number11()
