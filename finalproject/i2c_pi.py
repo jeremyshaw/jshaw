@@ -28,10 +28,32 @@ def web_server():
         print('Ready to serve...')
         message = connectionSocket.recv(1024)
         connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
-        bus.write_byte(11, 1)
-        waterlevel = bus.read_byte(11)
-        connectionSocket.send(b'waterlevel = ')
-        connectionSocket.send(bytes(str(waterlevel), 'ascii'))
+        try:
+            bus.write_byte(11, 1)
+            waterlevel = bus.read_byte(11)
+        except:
+            waterlevel = 'error'
+        try:
+            bus.write_byte(13, 1)
+            temp_sensor = bus.read_byte(13)
+        except:
+            temp_sensor = 'error'
+        try:
+            bus.write_byte(13, 2)
+            light_sensor = bus.read_byte(13)
+        except:
+            light_sensor = 'error'
+        try:
+            bus.write_byte(13, 3)
+            humidity_sensor = bus.read_byte(13)
+        except:
+            humidity_sensor = 'error'
+        connectionSocket.send(b'<html><head><title>Micro Greenhouse</title></head><body>')
+        connectionSocket.send(b'waterlevel = ' + bytes(str(waterlevel), 'ascii') + b'<p>')
+        connectionSocket.send(b'temp sensor = ' + bytes(str(temp_sensor), 'ascii') + b'<p>')
+        connectionSocket.send(b'light sensor = ' + bytes(str(light_sensor), 'ascii') + b'<p>')
+        connectionSocket.send(b'humidity sensor = ' + bytes(str(humidity_sensor), 'ascii') + b'<p>')
+        connectionSocket.send(b'</body></html>')
         connectionSocket.close()
         
 try: 
