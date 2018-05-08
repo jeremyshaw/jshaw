@@ -78,7 +78,11 @@ def number11():
         print("2 for water pump on/off")
         print("3 for heater on/off")
         print("4 for light switch on/off")
-        options = int(input("Enter 1-4: "))
+        try:
+            options = int(input("Enter 0-4: "))
+        except:
+            print("input invalid, try again")
+            options = 9
         if options == 0:
             break
         elif options == 1:
@@ -115,7 +119,11 @@ def number12():
         print("2 to set low fan speed")
         print("3 to set medium fan speed")
         print("4 to set high fan speed")
-        options = int(input("Choose an option: "))
+        try:
+            options = int(input("Enter 0-4: "))
+        except:
+            print("input invalid, try again")
+            options = 9
         if options == 0:
             break
         elif options == 1:
@@ -144,7 +152,11 @@ def number13():
         print("1 for temperature sensor")
         print("2 for light sensor")
         print("3 for humidity sensor")
-        options = int(input("Choose an option: "))
+        try:
+            options = int(input("Enter 0-3: "))
+        except:
+            print("input invalid, try again")
+            options = 9
         if options == 0:
             break
         elif options == 1:
