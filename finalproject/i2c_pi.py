@@ -50,9 +50,9 @@ def web_server():
         connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
         connectionSocket.send(b'<html><head><title>Micro Greenhouse</title></head><body>')
         connectionSocket.send(b'waterlevel = ' + bytes(str(waterlevel), 'ascii') + b'<p>')
-        connectionSocket.send(b'temp sensor = ' + bytes(str(temp_sensor), 'ascii') + b'<p>')
+        connectionSocket.send(b'temp sensor = ' + bytes(str(temp_sensor), 'ascii') + b'C <p>')
         connectionSocket.send(b'light sensor = ' + bytes(str(light_sensor), 'ascii') + b'<p>')
-        connectionSocket.send(b'humidity sensor = ' + bytes(str(humidity_sensor), 'ascii') + b'<p>')
+        connectionSocket.send(b'humidity sensor = ' + bytes(str(humidity_sensor), 'ascii') + b'% <p>')
         connectionSocket.send(b'</body></html>')
         connectionSocket.close()
         
