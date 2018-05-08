@@ -27,7 +27,6 @@ def web_server():
         connectionSocket, addr = serverSocket.accept()
         print('Ready to serve...')
         message = connectionSocket.recv(1024)
-        connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
         try:
             bus.write_byte(11, 1)
             waterlevel = bus.read_byte(11)
@@ -48,6 +47,7 @@ def web_server():
             humidity_sensor = bus.read_byte(13)
         except:
             humidity_sensor = 'error'
+        connectionSocket.send(b'HTTP/1.1 200 OK\nContent-Type: text/html\n\n')
         connectionSocket.send(b'<html><head><title>Micro Greenhouse</title></head><body>')
         connectionSocket.send(b'waterlevel = ' + bytes(str(waterlevel), 'ascii') + b'<p>')
         connectionSocket.send(b'temp sensor = ' + bytes(str(temp_sensor), 'ascii') + b'<p>')
