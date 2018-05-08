@@ -110,9 +110,9 @@ def number12():
             time.sleep(1)
         if not options:
             continue
-        
+
         fanswitch = readNumber()
-        print("fan status: " + srt(fanswitch))
+        print("fan status: " + str(fanswitch))
         
 def number13():
     #daniel
