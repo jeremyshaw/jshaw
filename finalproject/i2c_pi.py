@@ -93,12 +93,12 @@ def number11():
         elif options == 2:
             writeNumber(options)
             time.sleep(1)
-            waterpump = readNumber()
+            waterpump = (readNumber() + 1) % 1
             print("water pump state = " + str(waterpump))
         elif options == 3:
             writeNumber(options)
             time.sleep(1)
-            heaterswitch = readNumber()
+            heaterswitch = (readNumber() + 1 ) % 1
             print("heater state = " + str(heaterswitch))
         elif options == 4:
             writeNumber(options)
