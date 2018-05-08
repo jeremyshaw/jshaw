@@ -197,7 +197,10 @@ while True:
     print("11 for Jeremy")
     print("12 for Wesley")
     print("13 for Daniel")
-    address = int(input("Device address: \n"))
+    try:
+        address = int(input("Device address: \n"))
+    except Exception:
+        print("invalid input, try again.")
     if address == 11:
         number11()
     elif address == 12:
