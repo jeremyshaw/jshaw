@@ -162,11 +162,8 @@ def number13():
             time.sleep(1)
             humidity_sensor = readNumber()
             print("humidity = " + str(humidity_sensor))
-
         if not options:
             continue
-
-
 
 def writeFile():
     f = open(tf, 'w')
