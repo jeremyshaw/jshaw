@@ -89,33 +89,30 @@ def number12():
     while True:
         #print("Current temp is <insert temp>")
         print("0 for exit")
-        print("1 to input low temp")
-        print("2 to imput high temp")
-        print("3 toggle fan on")
-        print("4 toggle fan off")
+        print("1 to turn off fan")
+        print("2 to set low fan speed")
+        print("3 to set medium fan speed")
+        print("4 to set high fan speed")
         options = int(input("Choose an option: "))
         if options == 0:
             break
         elif options == 1:
-            print("input low temp")
             writeNumber(options)
             time.sleep(1)
         elif options == 2:
-            print("input high temp")
             writeNumber(options)
             time.sleep(1)
         elif options == 3:
             writeNumber(options)
             time.sleep(1)
-            fanswitch = readNumber()
-            print("fan (active low) = " + str(fanswitch))
         elif options == 4:
             writeNumber(options)
             time.sleep(1)
-            fanswitch = readNumber()
-            print("fan (active low) = " + str(fanswitch))
         if not options:
             continue
+        
+        fanswitch = readNumber()
+        print("fan status: " + srt(fanswitch))
         
 def number13():
     #daniel
