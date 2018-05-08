@@ -80,7 +80,7 @@ def number11():
         print("4 for light switch on/off")
         try:
             options = int(input("Enter 0-4: "))
-        except:
+        except Exception:
             print("input invalid, try again")
             options = 9
         if options == 0:
@@ -121,7 +121,7 @@ def number12():
         print("4 to set high fan speed")
         try:
             options = int(input("Enter 0-4: "))
-        except:
+        except Exception:
             print("input invalid, try again")
             options = 9
         if options == 0:
@@ -154,7 +154,7 @@ def number13():
         print("3 for humidity sensor")
         try:
             options = int(input("Enter 0-3: "))
-        except KeyboardInterrupt:
+        except Exception:
             print("input invalid, try again")
             options = 9
         if options == 0:
@@ -199,7 +199,7 @@ while True:
     print("13 for Daniel")
     try:
         address = int(input("Device address: \n"))
-    except KeyboardInterrupt:
+    except Exception:
         print("invalid input, try again.")
     if address == 11:
         number11()
